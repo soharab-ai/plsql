@@ -22,8 +22,15 @@ begin
        v_grade := 'C';
    end if;
        
-
-   dbms_output.put_line(v_name || ' has Grade ' || v_grade);
+   -- Log with structured format and context information
+   log_message('INFO', 'EMPLOYEE_GRADE', 
+     '{"event":"grade_assignment","employee":"' || DBMS_ASSERT.ENQUOTE_LITERAL(v_name) || 
+     '","grade":"' || v_grade || '","timestamp":"' || TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD"T"HH24:MI:SS.FF3TZH:TZM') || 
+     '","session":"' || SYS_CONTEXT('USERENV','SESSIONID') || 
+     '","user":"' || SYS_CONTEXT('USERENV','SESSION_USER') || '"}');
 end;   
+                  
+   
+
                   
    
