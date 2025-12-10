@@ -1,13 +1,14 @@
 -- Find out missing employee ids using exception handling and nested block
 DECLARE
-  V_MIN_EMPID EMPLOYEES.EMPLOYEE_ID%TYPE;  
-  V_MAX_EMPID EMPLOYEES.EMPLOYEE_ID%TYPE;  
-  V_EMPID EMPLOYEES.EMPLOYEE_ID%TYPE;  
+  v_min_id employees.employee_id%TYPE;  
+  v_max_id employees.employee_id%TYPE;  
+  v_id employees.employee_id%TYPE;  
 BEGIN
 
-  SELECT MIN(EMPLOYEE_ID), MAX(EMPLOYEE_ID) 
-   INTO V_MIN_EMPID, V_MAX_EMPID
-  FROM EMPLOYEES;
+  SELECT MIN(employee_id), MAX(employee_id) 
+   INTO v_min_id, v_max_id
+  FROM employees;
+
 
   FOR EMPID IN V_MIN_EMPID + 1.. V_MAX_EMPID-1
   LOOP 
