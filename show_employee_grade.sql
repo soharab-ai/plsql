@@ -23,6 +23,22 @@ begin
 
 
    dbms_output.put_line(v_name || ' has Grade ' || v_grade);
+   else
+       v_grade := 'C';
+   end if;
+   
+   -- Log using application logging package
+   begin
+      app_logger.log_info(
+         p_module => 'EMPLOYEE_GRADING',
+         p_message => 'Employee ' || app_logger.sanitize_input(v_name) || 
+                      ' assigned grade ' || v_grade
+      );
+   exception
+      when others then
+         -- Ensure logging failures don't affect main procedure
+         null;
+   end;
 end;   
-                  
+
    
