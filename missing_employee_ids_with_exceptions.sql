@@ -18,9 +18,13 @@ BEGIN
        WHERE EMPLOYEE_ID = EMPID;
       EXCEPTION 
        WHEN NO_DATA_FOUND THEN
-         DBMS_OUTPUT.PUT_LINE(EMPID);
+         -- Log using application logging package
+         app_logger.log_warning('Employee ID not found: '||TO_CHAR(EMPID), 'EMPLOYEE_VALIDATION');
       END;
        
   END LOOP;     
+
+END;
+
 
 END;
