@@ -14,16 +14,31 @@ begin
                   else  'C'
                end;   */
                
-   if v_salary > 15000 then
-       v_grade := 'A';
-   elsif  v_salary > 10000 then
-       v_grade := 'B';
+   -- Using CASE statement for better readability and maintainability
+   v_grade := CASE
+      WHEN v_salary > 15000 THEN 'A'
+      WHEN v_salary > 10000 THEN 'B'
+      ELSE 'C'
+   END;
+
+
+   dbms_output.put_line(v_name || ' has Grade ' || v_grade);
    else
        v_grade := 'C';
    end if;
-       
-
-   dbms_output.put_line(v_name || ' has Grade ' || v_grade);
+   
+   -- Log using application logging package
+   begin
+      app_logger.log_info(
+         p_module => 'EMPLOYEE_GRADING',
+         p_message => 'Employee ' || app_logger.sanitize_input(v_name) || 
+                      ' assigned grade ' || v_grade
+      );
+   exception
+      when others then
+         -- Ensure logging failures don't affect main procedure
+         null;
+   end;
 end;   
-                  
+
    

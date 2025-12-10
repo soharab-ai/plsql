@@ -15,9 +15,22 @@ begin
       where employee_id = empid;
       
       if v_count = 0 then
-        dbms_output.put_line(empid);
+        BEGIN
+          app_logger.log_message(
+            p_message => 'Missing employee ID detected',
+            p_severity => 'INFO',
+            p_module => 'missing_employeeids',
+            p_context_id => empid
+          );
+        EXCEPTION
+          WHEN OTHERS THEN
+            NULL; -- Prevent logging failures from affecting main process
+        END;
       end if;
       
    end loop;
+   
+end;
+
    
 end;

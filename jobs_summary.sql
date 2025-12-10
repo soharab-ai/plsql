@@ -37,13 +37,18 @@ begin
      end loop;
     
      
-     dbms_output.put_line('Job Title       : ' || jobrec.job_title);
-     dbms_output.put_line('No. Employees   : ' || v_count);
-     dbms_output.put_line('Avg Salary      : ' || v_avg_sal);
-     dbms_output.put_line('Avg Exp         : ' || v_avg_exp);
-     dbms_output.put_line('History Count   : ' || v_count_hist);
-     dbms_output.put_line('Top Employee(s) : ' || rtrim(v_names,','));
+     -- Initialize transaction ID for correlated logging
+     v_transaction_id := sys_guid();
+     
+     -- Use robust logging with severity levels and parameter binding
+     log_job_info(v_transaction_id, 'INFO', 'JOB_TITLE', jobrec.job_title);
+     log_job_info(v_transaction_id, 'INFO', 'NO_EMPLOYEES', v_count);
+     log_job_info(v_transaction_id, 'INFO', 'AVG_SALARY', v_avg_sal);
+     log_job_info(v_transaction_id, 'INFO', 'AVG_EXPERIENCE', v_avg_exp);
+     log_job_info(v_transaction_id, 'INFO', 'HISTORY_COUNT', v_count_hist);
+     log_job_info(v_transaction_id, 'INFO', 'TOP_EMPLOYEES', rtrim(v_names,','));
   end loop;  
      
 
 end;
+

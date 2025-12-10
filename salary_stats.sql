@@ -21,9 +21,12 @@ begin
    from employees
    where salary < v_avg_salary;
    
-   dbms_output.put_line('Higher than avg : ' || v_high);
-   dbms_output.put_line('Same as avg     : ' || v_same);
-   dbms_output.put_line('Lower than  avg : ' || v_low);
+   DBMS_APPLICATION_INFO.SET_ACTION('Reporting salary statistics');
+   secure_log('INFO', 'Higher than avg : ' || TO_CHAR(v_high) || ', Session: ' || SYS_CONTEXT('USERENV','SESSIONID'));
+   secure_log('INFO', 'Same as avg     : ' || TO_CHAR(v_same) || ', Session: ' || SYS_CONTEXT('USERENV','SESSIONID'));
+   secure_log('INFO', 'Lower than avg  : ' || TO_CHAR(v_low) || ', Session: ' || SYS_CONTEXT('USERENV','SESSIONID'));
  
+end;   
+
 end;   
   
