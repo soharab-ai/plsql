@@ -14,14 +14,13 @@ begin
                   else  'C'
                end;   */
                
-   if v_salary > 15000 then
-       v_grade := 'A';
-   elsif  v_salary > 10000 then
-       v_grade := 'B';
-   else
-       v_grade := 'C';
-   end if;
-       
+   -- Using CASE statement for better readability and maintainability
+   v_grade := CASE
+      WHEN v_salary > 15000 THEN 'A'
+      WHEN v_salary > 10000 THEN 'B'
+      ELSE 'C'
+   END;
+
 
    dbms_output.put_line(v_name || ' has Grade ' || v_grade);
 end;   
