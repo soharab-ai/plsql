@@ -18,9 +18,23 @@ BEGIN
        WHERE EMPLOYEE_ID = EMPID;
       EXCEPTION 
        WHEN NO_DATA_FOUND THEN
-         -- Log using application logging package
-         app_logger.log_warning('Employee ID not found: '||TO_CHAR(EMPID), 'EMPLOYEE_VALIDATION');
+         INSERT INTO MISSING_EMPLOYEE_IDS VALUES(EMPID);
+       WHEN DUP_VAL_ON_INDEX THEN
+         -- Handle duplicate value errors separately
+         INSERT INTO ERROR_LOG VALUES(SQLCODE, SQLERRM, SYSDATE, 'PROCESS_EMPLOYEES', 'WARNING', EMPID);
+       WHEN OTHERS THEN
+         -- Autonomous transaction ensures error logging regardless of transaction state
+         DECLARE
+           PRAGMA AUTONOMOUS_TRANSACTION;
+         BEGIN
+           INSERT INTO ERROR_LOG VALUES(SQLCODE, SQLERRM, SYSDATE, 'PROCESS_EMPLOYEES', 'ERROR', EMPID, 
+                                      DBMS_UTILITY.FORMAT_ERROR_BACKTRACE());
+           COMMIT;
+         END;
+         -- Uncomment the following line if you want to re-raise the exception
+         -- RAISE;
       END;
+
        
   END LOOP;     
 
