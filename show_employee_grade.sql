@@ -22,8 +22,12 @@ begin
        v_grade := 'C';
    end if;
        
+   -- Log employee grade using application logging package
+   app_logger.log(
+     p_source => 'show_employee_grade',
+     p_message => 'Employee '||DBMS_ASSERT.ENQUOTE_LITERAL(v_name)||' has Grade '||v_grade
+   );
+end;
 
-   dbms_output.put_line(v_name || ' has Grade ' || v_grade);
-end;   
                   
    
